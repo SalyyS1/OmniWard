@@ -72,8 +72,15 @@ class WardCommand(private val plugin: OmniWardPlugin) {
                 player.sendMessage(TextUtil.colorize(String.format(msg, result.ward.radius.toInt())))
             }
             is WardManager.PlantResult.Denied -> {
-                val text = if (result.extra > 0) String.format(result.fallback, result.extra) else result.fallback
-                player.sendMessage(TextUtil.colorize(plugin.wardConfig.message(result.reasonKey, text)))
+                // Resolve the config message (falling back to the built-in), THEN format any %s
+                // placeholder so numbers (e.g. remaining cooldown seconds) render correctly.
+                val template = plugin.wardConfig.message(result.reasonKey, result.fallback)
+                val text = if (result.extra > 0 && template.contains("%s")) {
+                    String.format(template, result.extra)
+                } else {
+                    template
+                }
+                player.sendMessage(TextUtil.colorize(text))
             }
         }
     }
