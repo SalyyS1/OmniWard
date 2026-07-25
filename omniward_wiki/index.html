@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OmniWard — PvP Capturable Aura Objectives for Paper</title>
+<style>
+  :root{
+    --bg:#0b0f14;--surface:#131a22;--surface2:#1a232e;--ink:#e9eef5;--muted:#9fb0c3;
+    --line:rgba(207,222,238,.14);--amber:#f3b562;--cyan:#5fc8e6;--coral:#ec806c;--violet:#a98be0;
+    --serif:Georgia,"Times New Roman",serif;--sans:"Segoe UI","Trebuchet MS",sans-serif;--mono:"Cascadia Code",Consolas,monospace;
+  }
+  *{box-sizing:border-box}html{scroll-behavior:smooth}
+  body{margin:0;color:var(--ink);font:16px/1.65 var(--sans);
+    background:radial-gradient(circle at 84% 6%,rgba(95,200,230,.13),transparent 26rem),radial-gradient(circle at 4% 18%,rgba(169,139,224,.10),transparent 28rem),linear-gradient(135deg,#090d12,var(--bg) 52%,#0d141c)}
+  a{color:var(--cyan);text-decoration:none}a:hover{text-decoration:underline}
+  .wrap{width:min(1080px,calc(100% - 40px));margin:0 auto}
+  header{border-bottom:1px solid var(--line);padding:20px 0;display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap}
+  .brand{display:flex;align-items:center;gap:11px}
+  .mark{width:34px;height:34px;display:grid;place-items:center;background:var(--cyan);color:var(--bg);font:700 15px/1 var(--mono);clip-path:polygon(50% 0,100% 25%,88% 82%,50% 100%,12% 82%,0 25%)}
+  .brand b{font:700 13px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase}
+  nav a{margin-left:18px;color:var(--muted);font:600 12px/1 var(--mono);letter-spacing:.06em;text-transform:uppercase}
+  .hero{padding:72px 0 48px}
+  .kicker{color:var(--cyan);font:700 11px/1.2 var(--mono);letter-spacing:.18em;text-transform:uppercase}
+  h1{font:500 clamp(44px,7vw,88px)/.95 var(--serif);letter-spacing:-.04em;margin:16px 0 20px}
+  h1 em{color:var(--cyan);font-style:italic}
+  .lede{max-width:660px;color:#c2cedd;font-size:19px;margin-bottom:28px}
+  .badges{display:flex;gap:8px;flex-wrap:wrap}
+  .badge{border:1px solid var(--line);padding:6px 12px;font:600 11px/1 var(--mono);color:var(--muted)}
+  section{padding:44px 0;border-top:1px solid var(--line)}
+  h2{font:500 clamp(28px,4vw,44px)/1 var(--serif);letter-spacing:-.03em;margin:0 0 24px}
+  h3{font:600 18px/1.2 var(--sans);margin:28px 0 10px;color:var(--cyan)}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+  .card{border:1px solid var(--line);background:var(--surface);padding:22px}
+  .card h4{margin:0 0 8px;font:600 15px/1.2 var(--sans);color:var(--amber)}
+  .card p{margin:0;color:var(--muted);font-size:14px}
+  pre{background:#080b0f;border:1px solid var(--line);padding:16px;overflow:auto;font:13px/1.5 var(--mono);color:#cfe0ef}
+  code{font:13px/1.4 var(--mono);color:var(--amber)}
+  table{width:100%;border-collapse:collapse;font-size:14px;margin:12px 0}
+  th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line)}
+  th{color:var(--cyan);font:700 12px/1 var(--mono);text-transform:uppercase;letter-spacing:.05em}
+  td code{color:var(--amber)}
+  ol{color:var(--muted)}
+  .steps{counter-reset:step;list-style:none;padding:0}
+  .steps li{position:relative;padding:14px 0 14px 52px;border-bottom:1px solid var(--line);color:var(--muted)}
+  .steps li::before{counter-increment:step;content:counter(step);position:absolute;left:0;top:12px;width:32px;height:32px;display:grid;place-items:center;border:1px solid var(--cyan);color:var(--cyan);font:700 14px/1 var(--mono);border-radius:50%}
+  footer{padding:40px 0;border-top:1px solid var(--line);color:var(--muted);font-size:13px}
+  ul{color:var(--muted)}li{margin:6px 0}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="brand"><span class="mark">W</span><b>OmniWard</b></div>
+    <nav>
+      <a href="#features">Features</a>
+      <a href="#capture">Capture</a>
+      <a href="#install">Install</a>
+      <a href="#commands">Commands</a>
+      <a href="#config">Config</a>
+      <a href="CHANGELOG.md">Changelog</a>
+    </nav>
+  </header>
+
+  <div class="hero">
+    <div class="kicker">SalyVn · Paper RPG Suite</div>
+    <h1>Plant a ward. Hold the <em>ground</em>. Capture theirs.</h1>
+    <p class="lede">OmniWard turns any map into a contest of control points. Players plant wards that project a team aura buff to nearby allies — and enemies channel-capture them under fire to flip or destroy the objective. Fully config-driven, thread-safe, and Folia-ready.</p>
+    <div class="badges">
+      <span class="badge">Paper 1.21.11</span>
+      <span class="badge">Folia-ready</span>
+      <span class="badge">Brigadier commands</span>
+      <span class="badge">Vault optional</span>
+      <span class="badge">PlaceholderAPI optional</span>
+      <span class="badge">Kotlin</span>
+    </div>
+  </div>
+
+  <section id="features">
+    <h2>What it does</h2>
+    <div class="grid">
+      <div class="card"><h4>Aura projection</h4><p>Each ward continuously applies configurable PotionEffects to allied players standing within its radius. Buff your team's control point.</p></div>
+      <div class="card"><h4>Channel capture</h4><p>Enemies stand in range and channel for N seconds to seize the ward. The channel breaks the moment they take damage or leave range.</p></div>
+      <div class="card"><h4>Flip or destroy</h4><p>Choose the capture outcome: <code>FLIP</code> transfers control to the capturer's side, or <code>DESTROY</code> removes the ward entirely.</p></div>
+      <div class="card"><h4>Pluggable teams</h4><p>Uses Bukkit scoreboard teams when present, otherwise falls back to a simple owner-vs-everyone model. No hard team-plugin dependency.</p></div>
+      <div class="card"><h4>Live feedback</h4><p>Particle rings mark every ward and turn hostile while contested. Capture progress streams to action bars for attackers and defenders.</p></div>
+      <div class="card"><h4>Limits &amp; lifetime</h4><p>Per-player ward caps, a server-wide total, plant cooldowns, and automatic expiry keep the map balanced.</p></div>
+      <div class="card"><h4>Non-destructive markers</h4><p>An optional marker block is placed on plant and the original block is restored on removal — tracked in runtime state.</p></div>
+      <div class="card"><h4>Hot reload</h4><p><code>/ward reload</code> re-reads config.yml and safely stops and restarts the repeating region task with the new settings.</p></div>
+      <div class="card"><h4>Folia-safe</h4><p>All entity effect application and block edits are dispatched onto the owning region thread via FoliaLib.</p></div>
+    </div>
+  </section>
+
+  <section id="capture">
+    <h2>How capture works</h2>
+    <ol class="steps">
+      <li>A ward is planted by its owner and immediately begins projecting its aura to allies inside the radius.</li>
+      <li>Every tick interval, the repeating task scans players in range and splits them into allies and enemies using the team resolver.</li>
+      <li>Allies within range receive the configured aura PotionEffects; the nearest enemy in range becomes the active channeler.</li>
+      <li>Each tick the channeler holds position, capture progress advances. Progress and a live bar are shown on action bars.</li>
+      <li>If the channeler takes damage, or no enemy remains in range, the channel is interrupted and progress resets to zero.</li>
+      <li>When progress reaches the requirement, the ward flips to the capturer's side (FLIP) or is destroyed (DESTROY). Owners are notified.</li>
+    </ol>
+  </section>
+
+  <section id="install">
+    <h2>Installation</h2>
+    <ol style="color:var(--muted)">
+      <li>Drop <code>OmniWard-x.y.z.jar</code> into your server's <code>plugins/</code> folder.</li>
+      <li>Start the server once to generate <code>plugins/OmniWard/config.yml</code>.</li>
+      <li>Tune the radius, aura effects and capture timing, then run <code>/ward reload</code>.</li>
+    </ol>
+    <h3>Optional soft dependencies</h3>
+    <ul>
+      <li><b>Vault</b> — detected if present; OmniWard degrades gracefully without it.</li>
+      <li><b>PlaceholderAPI</b> — detected if present; no hard dependency.</li>
+    </ul>
+    <h3>Teams</h3>
+    <p style="color:var(--muted)">If the ward owner belongs to a Bukkit scoreboard team, allies are resolved by shared team membership. Otherwise only the owner is an ally and everyone else is an enemy.</p>
+  </section>
+
+  <section id="commands">
+    <h2>Commands &amp; permissions</h2>
+    <table>
+      <tr><th>Command</th><th>Description</th><th>Permission</th></tr>
+      <tr><td><code>/ward</code></td><td>Open the GUI listing your active wards</td><td><code>omniward.use</code></td></tr>
+      <tr><td><code>/ward plant</code></td><td>Plant a ward at your location</td><td><code>omniward.use</code></td></tr>
+      <tr><td><code>/ward list</code></td><td>Open the ward GUI</td><td><code>omniward.use</code></td></tr>
+      <tr><td><code>/ward remove</code></td><td>Remove your nearest own ward</td><td><code>omniward.use</code></td></tr>
+      <tr><td><code>/ward reload</code></td><td>Reload config &amp; restart the task</td><td><code>omniward.admin</code></td></tr>
+    </table>
+    <p style="color:var(--muted)">Alias: <code>/wards</code>. Click a ward in the GUI to remove it.</p>
+  </section>
+
+  <section id="config">
+    <h2>Configuration</h2>
+    <p style="color:var(--muted)">A trimmed example — every field falls back to a sensible default if omitted.</p>
+    <pre>ward:
+  radius: 8.0            # aura + capture radius in blocks
+  max-per-player: 2      # wards a single player may hold
+  max-total: 50          # server-wide ward cap
+  lifetime-seconds: 300  # 0 = permanent until captured
+  cooldown-seconds: 30   # delay between plants per player
+
+capture:
+  seconds: 5             # channel time to capture
+  mode: FLIP             # FLIP (transfer control) or DESTROY
+  tick-interval-ticks: 10 # task cadence (20 ticks = 1s)
+
+aura:
+  duration-ticks: 40     # effect refresh window (>= tick interval x2)
+  effects:               # "TYPE:level" — level is 1-based
+    - "SPEED:1"
+    - "REGENERATION:1"
+    - "DAMAGE_RESISTANCE:1"
+
+visual:
+  place-block: true      # place a marker block on plant
+  marker-block: BEACON   # restored to original on removal
+  owner-particle: HAPPY_VILLAGER
+  capture-particle: ANGRY_VILLAGER
+  particle-points: 24    # ring resolution
+
+messages:
+  planted: "&aWard planted! It projects an aura within &e%s&a blocks."
+  captured-flip: "&aYou captured the ward! It now serves your side."
+  captured-destroy: "&aYou destroyed the enemy ward!"
+  capture-interrupted: "&cCapture interrupted — you took damage!"
+  progress-enemy: "&aCapturing... &f%bar% &7%pct%%"
+  progress-ally: "&e&#9020; Ward under attack! &f%bar% &7%pct%%"</pre>
+    <h3>Aura effect reference</h3>
+    <table>
+      <tr><th>Field</th><th>Meaning</th></tr>
+      <tr><td><code>aura.effects</code></td><td>List of <code>POTION_EFFECT_TYPE:level</code> (level is 1-based; <code>SPEED:1</code> = Speed I)</td></tr>
+      <tr><td><code>capture.mode</code></td><td><code>FLIP</code> transfers control, <code>DESTROY</code> removes the ward</td></tr>
+      <tr><td><code>visual.marker-block</code></td><td>Any block <code>Material</code>; the original block is saved and restored on removal</td></tr>
+      <tr><td><code>%bar%</code> / <code>%pct%</code></td><td>Progress placeholders usable inside capture progress messages</td></tr>
+    </table>
+  </section>
+
+  <footer>
+    <div class="wrap" style="width:auto;margin:0">
+      OmniWard · part of the SalyVn OmniBundle RPG suite · Paper 1.21.11 · <a href="CHANGELOG.md">Changelog</a>
+    </div>
+  </footer>
+</div>
+</body>
+</html>

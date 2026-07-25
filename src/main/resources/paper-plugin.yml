@@ -1,0 +1,25 @@
+name: OmniWard
+version: ${version}
+main: com.salyvn.omniward.OmniWardPlugin
+bootstrapper: com.salyvn.omniward.OmniWardBootstrap
+api-version: "1.21"
+author: SalyVn
+description: PvP map-control objective. Plant wards that project team aura buffs; enemies channel-capture to flip or destroy them.
+folia-supported: true
+
+dependencies:
+  server:
+    Vault:
+      load: BEFORE
+      required: false
+    PlaceholderAPI:
+      load: BEFORE
+      required: false
+
+permissions:
+  omniward.admin:
+    description: Admin commands (reload)
+    default: op
+  omniward.use:
+    description: Plant, list and remove your own wards
+    default: true

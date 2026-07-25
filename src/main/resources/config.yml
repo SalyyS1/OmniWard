@@ -1,0 +1,71 @@
+# =====================================================================
+#  OmniWard — PvP map-control objective
+#  Plant a ward that projects a team aura buff to nearby allies.
+#  Enemies channel-capture it (stand in range for N seconds) to flip
+#  or destroy it. All values are hot-reloadable via /ward reload.
+# =====================================================================
+
+ward:
+  # Radius (blocks) in which the aura is applied and captures are channeled.
+  radius: 8.0
+  # Max simultaneous wards a single player may own.
+  max-per-player: 2
+  # Hard cap on total active wards across the whole server.
+  max-total: 50
+  # Ward auto-expires after this many seconds. 0 = never expires.
+  lifetime-seconds: 300
+  # Cooldown (seconds) between a player's ward plants. 0 = no cooldown.
+  cooldown-seconds: 30
+
+capture:
+  # Seconds an enemy must channel (uninterrupted, in range) to capture.
+  seconds: 5
+  # FLIP  = control transfers to the capturer's side (ward keeps projecting).
+  # DESTROY = ward is removed on capture.
+  mode: FLIP
+  # How often (server ticks) the capture/aura task runs. 20 ticks = 1s.
+  # Lower = smoother progress + more responsive, higher = cheaper.
+  tick-interval-ticks: 10
+
+aura:
+  # How long (ticks) each re-applied potion effect lasts. Must exceed the
+  # tick interval so allies keep the buff between task runs. 20 ticks = 1s.
+  duration-ticks: 40
+  # Effects projected to allies in range. Format: "EFFECT:level" (level is
+  # 1-based; SPEED:2 = Speed II). Uses Bukkit PotionEffectType names.
+  effects:
+    - "SPEED:1"
+    - "REGENERATION:1"
+    - "DAMAGE_RESISTANCE:1"
+
+visual:
+  # Place a physical marker block at the ward location. The original block is
+  # saved and restored when the ward is removed/captured/expired (non-destructive).
+  place-block: true
+  # Marker block material (must be a placeable block). Set place-block: false
+  # to use particles only and never touch the world.
+  marker-block: BEACON
+  # Particle drawn as the ward's ring while it is under friendly control.
+  owner-particle: HAPPY_VILLAGER
+  # Particle drawn as the ring while the ward is being captured (contested).
+  capture-particle: ANGRY_VILLAGER
+  # Number of points in the particle ring (higher = denser ring).
+  particle-points: 24
+
+# All messages support legacy (&c), hex (&#RRGGBB) and MiniMessage (<red>).
+# %s in "planted"/"cooldown" is replaced with a number (radius / seconds).
+messages:
+  planted: "&aWard planted! It projects an aura within &e%s&a blocks."
+  cooldown: "&cOn cooldown for &e%s&cs."
+  max-per-player: "&cYou already have the maximum number of wards."
+  max-total: "&cThe server ward limit has been reached."
+  no-wards: "&cYou have no active wards."
+  removed: "&aRemoved your nearest ward."
+  expired: "&7One of your wards has expired."
+  captured-flip: "&aYou captured the ward! It now serves your side."
+  captured-destroy: "&aYou destroyed the enemy ward!"
+  owner-flipped: "&cOne of your wards was captured by an enemy!"
+  owner-lost: "&cOne of your wards was destroyed!"
+  capture-interrupted: "&cCapture interrupted — you took damage!"
+  progress-ally: "&e⚠ Ward under attack! &f%bar% &7%pct%%"
+  progress-enemy: "&aCapturing... &f%bar% &7%pct%%"
